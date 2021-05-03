@@ -10,4 +10,4 @@ workflows:
           context: my-context1
           image: eschool-fe
           registry-url: eu.gcr.io
-          tag: ${CIRCLE_SHA1:0:7}
+          
