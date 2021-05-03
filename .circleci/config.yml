@@ -3,7 +3,7 @@ executors:
     docker:
       - image: 'my-org/circleci-python:3.7'
 orbs:
-  gcp-gcr: circleci/gcp-gcr@x.y.z
+  gcp-gcr: circleci/gcp-gcr@0.13.0
 version: 2.1
 workflows:
   build_and_push_image:
