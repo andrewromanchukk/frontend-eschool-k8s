@@ -1,11 +1,12 @@
 version: 2.1
 orbs:
   gcp-cli: circleci/gcp-cli@2.1.0
-  gcp-gcr: benjlevesque/gcp-gcr@1.0.0            
+  gcp-gcr: circleci/gcp-gcr@0.13.0            
 workflows:
   build_and_push_image:
     jobs:
       - gcp-gcr/build-and-push-image:
+
           context: my-context1
           image: my-image1
           registry-url: eu.gcr.io
