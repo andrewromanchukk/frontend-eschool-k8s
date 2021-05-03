@@ -9,7 +9,7 @@ workflows:
   build_and_push_image:
     jobs:
       - gcp-gcr/build-and-push-image:
-          context: myContext
+          context: my-context1
           executor: my-executor
           image: my-image
           registry-url: us.gcr.io
