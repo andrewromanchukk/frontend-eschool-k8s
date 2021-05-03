@@ -1,13 +1,17 @@
-version: 2.1
+executors:
+  my-executor:
+    docker:
+      - image: 'my-org/circleci-python:3.7'
 orbs:
-  gcp-cli: circleci/gcp-cli@2.1.0
-  gcp-gcr: circleci/gcp-gcr@0.13.0            
+  gcp-gcr: circleci/gcp-gcr@x.y.z
+version: 2.1
 workflows:
   build_and_push_image:
     jobs:
       - gcp-gcr/build-and-push-image:
-          attach-workspace: true
-          context: my-context1
-          image: my-image1
-          registry-url: eu.gcr.io
-          tag: ${CIRCLE_SHA1:0:7}
+          context: myContext
+          executor: my-executor
+          image: my-image
+          registry-url: us.gcr.io
+          setup-remote-docker: true
+          use-docker-layer-caching: true
