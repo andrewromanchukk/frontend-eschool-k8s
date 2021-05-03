@@ -8,4 +8,5 @@ workflows:
       - gcp-gcr/build-and-push-image:
           context: my-context1
           image: my-image
-          registry-url: us.gcr.io
+          registry-url: eu.gcr.io
+          tag: ${CIRCLE_SHA1:0:7}
