@@ -13,6 +13,7 @@ workflows:
           registry-url: eu.gcr.io
       - gcp-gke/publish-and-rollout-image:
           cluster: gcp-testing
+          context: my-context1
           container: eschool-fe
           deployment: demo
           image: eu.gcr.io/eschool-fe/circleci-gke:v1
