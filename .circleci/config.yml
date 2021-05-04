@@ -11,7 +11,7 @@ workflows:
           context: my-context1
           image: eschool-fe
           registry-url: eu.gcr.io
-      - gke/publish-and-rollout-image:
+      - gcp-gke/publish-and-rollout-image:
           cluster: gcp-testing
           container: eschool-fe
           deployment: demo
