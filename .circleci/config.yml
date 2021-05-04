@@ -6,25 +6,14 @@ orbs:
 workflows:
   build_and_push_image:
     jobs:
-      build-and-push:
-        executor: gcp-gcr/default
-        steps:
-        - checkout
-        - gcp-gcr/gcr-auth
-        - gcp-gcr/build-image:
-            dockerfile: "Dockerfile"
-            image: eschool-fe
-            registry-url: eu.gcr.io
-            tag: ${CIRCLE_SHA1:0:7}
-        # Push and tag docker image according to commit SHA1 hash 
-        - gcp-gcr/push-image:
-            digest-path: /tmp/digest.txt
-            image: eschool-fe
-            registry-url: eu.gcr.io
-            tag: ${CIRCLE_SHA1:0:7}
-        # Tag pusshed image as latest
-        - gcp-gcr/tag-image:
-            image: eschool-fe
-            registry-url: eu.gcr.io
-            source-tag: ${CIRCLE_SHA1:0:7}
-            target-tag: latest
+      - gcp-gcr/build-and-push-image:
+          tag: "latest"
+          context: my-context1
+          image: eschool-fe
+          registry-url: eu.gcr.io
+      - gke/publish-and-rollout-image:
+          cluster: gcp-testing
+          container: eschool-fe
+          deployment: demo
+          image: eu.gcr.io/eschool-fe/circleci-gke:v1
+          tag: $CIRCLE_SHA1
