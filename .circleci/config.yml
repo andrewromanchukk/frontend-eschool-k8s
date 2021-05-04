@@ -3,37 +3,24 @@ orbs:
   gcp-cli: circleci/gcp-cli@2.1.0
   gcp-gcr: circleci/gcp-gcr@0.13.0
   gcp-gke: circleci/gcp-gke@1.2.0            
-jobs:
-  Build-Push-Image-Docker:
-    description: Build and push image to Google Container Registry
-    machine: true
-    steps:
-      - checkout
-      - gcr/gcr-auth
-      - gcr/build-image:
-          image: circle-gke
-          tag: "v2" #Change version number e.g to 'v3' when updating application
-      - gcr/push-image:
-          image: circle-gke
-          tag: "v2" #Change version number e.g to 'v3' when updating application
-    
-  deploy:
-    description: Deploy application to Google Kubernetes Engine
-    machine: true
-    steps:
-      # Install `gcloud` and `kubectl` if not already installed.
-      - gcp-gke/install
-      # Initialize the `gcloud` CLI.
-      - gcp-gke/init
-      # Update a deployment Docker image.
-      - gcp-gke/rollout-image:
-          deployment: circle-ci-cluster
-          container: dominic-backend
-          image: gcr.io/circle-ci-demo/circle-gke:v2 # change version when updating
 workflows:
-  build_update_deploy:
+  build_and_push_image:
     jobs:
-      - Build-Push-Image-Docker
-      - deploy:
-          requires:
-            - Build-Push-Image-Docker
+      - gcp-gcr/gcr-auth
+      - gcp-gcr/build-image:
+          dockerfile: "Dockerfile"
+          image: eschool-fe
+          registry-url: eu.gcr.io
+          tag: ${CIRCLE_SHA1:0:7}
+      # Push and tag docker image according to commit SHA1 hash 
+      - gcp-gcr/push-image:
+          digest-path: /tmp/digest.txt
+          image: eschool-fe
+          registry-url: eu.gcr.io
+          tag: ${CIRCLE_SHA1:0:7}
+      # Tag pusshed image as latest
+      - gcp-gcr/tag-image:
+          image: eschool-fe
+          registry-url: eu.gcr.io
+          source-tag: ${CIRCLE_SHA1:0:7}
+          target-tag: latest
