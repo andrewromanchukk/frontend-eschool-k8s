@@ -19,4 +19,4 @@ workflows:
           image: eu.gcr.io/eschool-fe/eschool-fe:latest
           tag: "latest"
           requires: 
-            - gcp-gcr/build-and-push-image:
+            - gcp-gcr/build-and-push-image
