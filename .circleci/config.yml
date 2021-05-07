@@ -8,15 +8,16 @@ workflows:
     jobs:
       - gcp-gcr/build-and-push-image:
           tag: "latest"
+          extra_build_args: "--build-arg BUILDMODE=$BUILDMODE"
           context: my-context1
           image: eschool-fe
           registry-url: eu.gcr.io
-      - gcp-gke/publish-and-rollout-image:
-          cluster: gcp-testing
-          context: my-context1
-          container: eschool-fe
-          deployment: demo
-          image: eschool-fe
-          tag: "latest"
-          requires: 
-            - gcp-gcr/build-and-push-image
+      # - gcp-gke/publish-and-rollout-image:
+      #     cluster: gcp-testing
+      #     context: my-context1
+      #     container: eschool-fe
+      #     deployment: demo
+      #     image: eschool-fe
+      #     tag: "latest"
+      #     requires: 
+      #       - gcp-gcr/build-and-push-image
