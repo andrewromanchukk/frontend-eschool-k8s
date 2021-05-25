@@ -19,7 +19,7 @@ pipeline {
     stages {
         stage('Build image') {
             app = docker.build(' https://eu.gcr.io/igneous-sum-312016/www')
-            script {
+            steps {
                     def customImage = docker.build("my-image:${env.BUILD_ID}")
                     customImage.push()
             }
