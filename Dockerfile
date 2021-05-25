@@ -1,6 +1,5 @@
 FROM node:8.11.2-alpine as node
 
-RUN echo $BUILDMODE
 WORKDIR /usr/src/app
 
 COPY package*.json ./
@@ -18,5 +17,4 @@ RUN rm -rf ./*
 COPY --from=node /usr/src/app/dist/eSchool .
 ARG BUILDMODE
 RUN sed -i -e "s|https://fierce-shore-32592.herokuapp.com|$BUILDMODE|g" /usr/share/nginx/html/main.js
-RUN cat /usr/share/nginx/html/main.js
 
