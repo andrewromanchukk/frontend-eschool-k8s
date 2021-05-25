@@ -18,7 +18,7 @@ pipeline {
     agent any
     stages {
         stage('Build image') {
-            app = docker.build(' eu.gcr.io/igneous-sum-312016/www')
+            app = docker.build(' https://eu.gcr.io/igneous-sum-312016/www')
             script {
                     def customImage = docker.build("my-image:${env.BUILD_ID}")
                     customImage.push()
