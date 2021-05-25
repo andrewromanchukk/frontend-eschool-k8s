@@ -7,5 +7,7 @@ node {
 
         /* Push the container to the custom Registry */
         customImage.push()
+                app.push("${env.BUILD_NUMBER}")
+                app.push('latest')
     }
 }
