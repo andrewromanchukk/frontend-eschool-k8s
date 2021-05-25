@@ -1,40 +1,52 @@
-node {
-    dockerfile {
-      additionalBuildArgs "--build-arg BUILDMODE=${BUILDMODE}"
-    }
-    checkout scm
+// node {
+//     dockerfile {
+//       additionalBuildArgs "--build-arg BUILDMODE=${BUILDMODE}"
+//     }
+//     checkout scm
 
-    docker.withRegistry('https://eu.gcr.io/igneous-sum-312016/uuu', 'gcr:gcr_eschool') {
+//     docker.withRegistry('https://eu.gcr.io/igneous-sum-312016/uuu', 'gcr:gcr_eschool') {
 
-        def customImage = docker.build("igneous-sum-312016/uuu:${env.BUILD_ID}")
+//         def customImage = docker.build("igneous-sum-312016/uuu:${env.BUILD_ID}")
 
-        /* Push the container to the custom Registry */
-        customImage.push()
-//                 customImage.push("${env.BUILD_NUMBER}")
-                customImage.push('latest')
-    }
-}
+//         /* Push the container to the custom Registry */
+//         customImage.push()
 
-
-
-// pipeline {
-//     agent any
-//     stages {
-//         stage('Build image') {
-//             steps{
-//             app = docker.build(' https://eu.gcr.io/igneous-sum-312016/www')
-            
-//                     def customImage = docker.build("my-image:${env.BUILD_ID}")
-//                     customImage.push()
-//             }
-//         }
-//         stage('Push image') {
-//             steps{
-//             docker.withRegistry('https://eu.gcr.io', 'gcr:gcr_eschool') {
-//                 customImage.push("${env.BUILD_NUMBER}")
 //                 customImage.push('latest')
-//             }
-//         }
 //     }
 // }
-// }
+pipeline {
+  environment {
+    registry = 'https://eu.gcr.io/igneous-sum-312016/uuu'
+    registryCredential = 'gcr_eschool'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/andrewromanchukk/frontend-eschool-k8s.git'
+      }
+    }
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( registry, registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+  }
+}
