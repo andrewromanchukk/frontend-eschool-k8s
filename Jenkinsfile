@@ -1,7 +1,7 @@
 node {
     checkout scm
 
-    docker.withRegistry('https://eu.gcr.io/igneous-sum-312016/uuu', 'docker_build') {
+    docker.withRegistry('https://eu.gcr.io/igneous-sum-312016/uuu', 'gcr:gcr_eschool') {
 
         def customImage = docker.build("my-image:${env.BUILD_ID}")
 
