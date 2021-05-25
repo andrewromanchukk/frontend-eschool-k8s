@@ -26,10 +26,12 @@ pipeline {
             }
         }
         stage('Push image') {
+            steps{
             docker.withRegistry('https://eu.gcr.io', 'gcr:gcr_eschool') {
                 app.push("${env.BUILD_NUMBER}")
                 app.push('latest')
             }
         }
     }
+}
 }
