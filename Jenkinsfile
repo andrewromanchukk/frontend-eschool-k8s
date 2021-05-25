@@ -14,6 +14,9 @@ node {
                 customImage.push('latest')
     }
 }
+
+
+
 // pipeline {
 //     agent any
 //     stages {
