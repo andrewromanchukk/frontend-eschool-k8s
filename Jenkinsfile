@@ -22,11 +22,11 @@ pipeline {
   }
   agent any
   stages {
-    stage('Cloning Git') {
-      steps {
-        git 'https://github.com/andrewromanchukk/frontend-eschool-k8s.git'
-      }
-    }
+    // stage('Cloning Git') {
+    //   steps {
+    //     git 'https://github.com/andrewromanchukk/frontend-eschool-k8s.git'
+    //   }
+    // }
     stage('Building image') {
       steps{
         script {
