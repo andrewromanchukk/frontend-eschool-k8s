@@ -1,4 +1,7 @@
 node {
+    triggers {
+    GitHubPush()
+  }
     checkout scm
 
     docker.withRegistry('https://eu.gcr.io/igneous-sum-312016/uuu', 'gcr:gcr_eschool') {
